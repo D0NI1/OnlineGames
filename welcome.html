@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #03025acc;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-message {
+            background-color: #272525;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(46, 43, 43, 0.1);
+            text-align: center;
+            width: 50%; /* Adjusted width */
+            margin-right: 20px; 
+            font-size: 16px; /* Adjusted font size */
+            color: #e4e4e4;
+        }
+
+        .welcome-message p {
+            color: #f3eeee;
+            margin-bottom: 1em;
+        }
+
+        .welcome-message button {
+            padding: 15px 30px; /* Adjusted padding */
+            background-color: #2e4357;
+            color: #fff;
+            border:#272525;
+            border-spacing: 3cm;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .welcome-message button:hover {
+            background-color: #64aae7;
+        }
+
+        .choose-game {
+            background-color: #272525;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(46, 43, 43, 0.1);
+            text-align: center;
+            width: 50%; /* Adjusted width */
+            margin-right: 20px; 
+            font-size: 16px; /* Adjusted font size */
+            color: #e4e4e4;
+        }
+
+        .choose-game p {
+            color: #f3eeee;
+            margin-bottom: 1em;
+        }
+
+        .choose-game button {
+            padding: 15px 30px; /* Adjusted padding */
+            background-color: #2e4357;
+            color: #fff;
+            border:#272525;
+            border-spacing: 3cm;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .choose-game button:hover {
+            background-color: #64aae7;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="welcome-message">
+            <h1>Welcome</h1>
+            <p>You have successfully logged in!</p>
+            <br>
+            <button onclick="logout()">Logout</button>
+            <br>
+            
+        </div>
+
+        <div class="choose-game">
+            <h1>Choose</h2>
+            <p>Choose the game you want to play!</p>
+            <ul>
+                <button onclick="Game1()">Tic-Tac-Toe</button>
+                <br>
+                <button onclick="Game2()">Rock-Paper-Scissors</button>
+                <br>
+                <button onclick="Game3()">Guess the Word</button>
+                <br>
+                <button onclick="Game4()">Guess the Number</button>
+            </ul>
+        </div>
+    </div>
+
+    <script>    
+        function logout() {
+            // Perform logout actions here (e.g., clearing session data)
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+        function Game1(){
+            window.location.href = 'Game1.html';
+        }
+        function Game2(){
+            window.location.href = 'Game2.html';
+        }
+        function Game3(){
+            window.location.href = 'Game3.html';
+        }
+        function Game4(){
+            window.location.href = 'Game4.html';
+        }
+    </script>
+</body>
+</html>

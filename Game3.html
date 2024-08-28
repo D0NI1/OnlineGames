@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Word</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #board {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        #hint {
+            margin-top: 10px;
+        }
+
+        #guesses {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 200px; /* Set a maximum width */
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2e4357;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #64aae7;
+        }
+
+        .letter {
+            display: inline-block;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        .correct {
+            background-color: #6abf69;
+            color: #fff;
+        }
+
+        .incorrect {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guess the Word</h1>
+        <div id="board">Word: <span id="word">******</span></div>
+        <div id="hint">Hint: <span id="wordHint"></span></div>
+        <div id="guesses">Correct Guesses: <span id="correctGuesses">0</span> | Total Guesses: <span id="totalGuesses">0</span></div>
+        <div id="loginGuesses">Correct Guesses Since Login: <span id="correctGuessesSinceLogin">0</span> | Total Guesses Since Login: <span id="totalGuessesSinceLogin">0</span></div>
+        <input type="text" id="guess" maxlength="10" placeholder="Enter your guess">
+        <button onclick="guessWord()">Guess</button>
+        <button onclick="resetGame()">Reset</button>
+        <button onclick="changeBackground()">Customize Background</button>
+    </div>
+
+    <script>
+        let wordList = {
+            "Footballers": ["ronaldo", "messi", "neymar", "mbappe", "salah"],
+            "Countries": ["france", "germany", "brazil", "argentina", "italy"],
+            "Fruits": ["apple", "banana", "orange", "grape", "pineapple"],
+            "Animals": ["lion", "elephant", "tiger", "giraffe", "zebra"],
+            "Colors": ["red", "blue", "green", "yellow", "purple"]
+        };
+        let totalGuesses = 0;
+        let guessesSinceLogin = 0;
+        let totalCorrectGuesses = 0;
+        let correctGuessesSinceLogin = 0;
+        let guessedWords = [];
+        let currentWord = "";
+        let currentCategory = "";
+
+        function generateRandomWord() {
+            let categories = Object.keys(wordList);
+            currentCategory = categories[Math.floor(Math.random() * categories.length)];
+            let words = wordList[currentCategory];
+            let randomWord = words[Math.floor(Math.random() * words.length)];
+            return randomWord;
+        }
+
+        function displayWord() {
+            let wordElement = document.getElementById('word');
+            wordElement.innerHTML = '';
+            for (let i = 0; i < currentWord.length; i++) {
+                let letter = document.createElement('span');
+                letter.classList.add('letter');
+                if (guessedWords.includes(currentWord[i])) {
+                    letter.classList.add('correct');
+                    letter.textContent = currentWord[i].toUpperCase();
+                } else {
+                    letter.classList.add('incorrect');
+                    letter.textContent = '*';
+                }
+                wordElement.appendChild(letter);
+            }
+            document.getElementById('wordHint').textContent = `Category: ${currentCategory}`;
+        }
+
+        function guessWord() {
+            let guessInput = document.getElementById('guess');
+            let guess = guessInput.value.toLowerCase();
+            guessInput.value =
+            '';
+
+            if (guess && wordList[currentCategory].includes(guess) && !guessedWords.includes(guess)) {
+                totalGuesses++;
+                guessesSinceLogin++;
+                document.getElementById('totalGuesses').textContent = totalGuesses;
+                document.getElementById('totalGuessesSinceLogin').textContent = guessesSinceLogin;
+
+                if (guess === currentWord) {
+                    totalCorrectGuesses++;
+                    correctGuessesSinceLogin++;
+                    document.getElementById('correctGuesses').textContent = totalCorrectGuesses;
+                    document.getElementById('correctGuessesSinceLogin').textContent = correctGuessesSinceLogin;
+                    guessedWords.push(guess);
+                    displayWord();
+                    alert("Congratulations! You guessed the word.");
+                    resetGame();
+                } else {
+                    guessedWords.push(guess);
+                    displayWord();
+                }
+            } else {
+                alert("Incorrect guess. Try again!");
+            }
+        }
+
+        function resetGame() {
+            guessedWords = [];
+            totalGuesses = 0;
+            guessesSinceLogin = 0;
+            document.getElementById('totalGuesses').textContent = totalGuesses;
+            document.getElementById('totalGuessesSinceLogin').textContent = guessesSinceLogin;
+            currentWord = generateRandomWord();
+            displayWord();
+        }
+
+        const changeBackground = () => {
+    // Generate random RGB values
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+
+    // Create RGB string
+    const color = `rgb(${r}, ${g}, ${b})`;
+
+    // Apply the color to the body
+    document.body.style.backgroundColor = color;
+};
+
+
+        function updateGuessesSinceLogin() {
+            if (localStorage.getItem('guessesSinceLogin')) {
+                guessesSinceLogin = parseInt(localStorage.getItem('guessesSinceLogin'));
+            }
+            document.getElementById('totalGuessesSinceLogin').textContent = guessesSinceLogin;
+        }
+
+        function updateTotalCorrectGuesses() {
+            if (localStorage.getItem('totalCorrectGuesses')) {
+                totalCorrectGuesses = parseInt(localStorage.getItem('totalCorrectGuesses'));
+            }
+            document.getElementById('correctGuesses').textContent = totalCorrectGuesses;
+        }
+
+        function updateCorrectGuessesSinceLogin() {
+            if (localStorage.getItem('correctGuessesSinceLogin')) {
+                correctGuessesSinceLogin = parseInt(localStorage.getItem('correctGuessesSinceLogin'));
+            }
+            document.getElementById('correctGuessesSinceLogin').textContent = correctGuessesSinceLogin;
+        }
+
+        function updateTotalGuesses() {
+            if (localStorage.getItem('totalGuesses')) {
+                totalGuesses = parseInt(localStorage.getItem('totalGuesses'));
+            }
+            document.getElementById('totalGuesses').textContent = totalGuesses;
+        }
+
+        function init() {
+            currentWord = generateRandomWord();
+            displayWord();
+            updateGuessesSinceLogin();
+            updateTotalCorrectGuesses();
+            updateCorrectGuessesSinceLogin();
+            updateTotalGuesses();
+            window.addEventListener('unload', function() {
+                localStorage.setItem('guessesSinceLogin', guessesSinceLogin.toString());
+                localStorage.setItem('totalCorrectGuesses', totalCorrectGuesses.toString());
+                localStorage.setItem('correctGuessesSinceLogin', correctGuessesSinceLogin.toString());
+                localStorage.setItem('totalGuesses', totalGuesses.toString());
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>

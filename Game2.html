@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .player-names input {
+            margin-bottom: 10px;
+        }
+
+        .choices {
+            margin-top: 20px;
+        }
+
+        .choices button {
+            padding: 10px 20px;
+            margin: 0 5px;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .scoreboard {
+            margin-top: 20px;
+        }
+
+        .scoreboard p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rock Paper Scissors</h1>
+        <div class="player-names">
+            <input type="text" id="player1" placeholder="Player 1">
+            <input type="text" id="player2" placeholder="Player 2">
+            <button onclick="changeNames()">Change Names</button>
+        </div>
+        <div class="scoreboard">
+            <p><span id="player1Name">Player 1</span> Score: <span id="player1Score">0</span></p>
+            <p><span id="player2Name">Player 2</span> Score: <span id="player2Score">0</span></p>
+        </div>
+        <div class="game-area">
+            <div class="choices">
+                <button onclick="choose('rock')">Rock</button>
+                <button onclick="choose('paper')">Paper</button>
+                <button onclick="choose('scissors')">Scissors</button>
+            </div>
+            <div class="result">
+                <p id="winner"></p>
+                <button onclick="resetScore()">Reset Score</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let player1Name = document.getElementById('player1Name');
+        let player2Name = document.getElementById('player2Name');
+        let player1Score = document.getElementById('player1Score');
+        let player2Score = document.getElementById('player2Score');
+        let winnerDisplay = document.getElementById('winner');
+
+        let scorePlayer1 = 0;
+        let scorePlayer2 = 0;
+
+        function changeNames() {
+            let newPlayer1Name = document.getElementById('player1').value;
+            let newPlayer2Name = document.getElementById('player2').value;
+
+            player1Name.textContent = newPlayer1Name ? newPlayer1Name : 'Player 1';
+            player2Name.textContent = newPlayer2Name ? newPlayer2Name : 'Player 2';
+        }
+
+        function choose(selection) {
+            let options = ['rock', 'paper', 'scissors'];
+            let player1Choice = options[Math.floor(Math.random() * 3)];
+            let player2Choice = options[Math.floor(Math.random() * 3)];
+
+            if ((selection === 'rock' && player2Choice === 'scissors') ||
+                (selection === 'paper' && player2Choice === 'rock') ||
+                (selection === 'scissors' && player2Choice === 'paper')) {
+                scorePlayer1++;
+                winnerDisplay.textContent = `${player1Name.textContent} wins!`;
+            } else if ((selection === 'rock' && player2Choice === 'paper') ||
+                (selection === 'paper' && player2Choice === 'scissors') ||
+                (selection === 'scissors' && player2Choice === 'rock')) {
+                scorePlayer2++;
+                winnerDisplay.textContent = `${player2Name.textContent} wins!`;
+            } else {
+                winnerDisplay.textContent = 'It\'s a tie!';
+            }
+
+            player1Score.textContent = scorePlayer1;
+            player2Score.textContent = scorePlayer2;
+        }
+
+        function resetScore() {
+            scorePlayer1 = 0;
+            scorePlayer2 = 0;
+            player1Score.textContent = scorePlayer1;
+            player2Score.textContent = scorePlayer2;
+            winnerDisplay.textContent = '';
+        }
+    </script>
+</body>
+</html>
